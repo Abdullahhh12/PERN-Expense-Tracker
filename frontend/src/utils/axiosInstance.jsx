@@ -1,13 +1,11 @@
 // src/utils/axiosInstance.js
 import axios from "axios";
 
+const base = import.meta.env.REACT_APP_API_URL || "https://pern-expense-tracker-bvv9.onrender.com";
+
 const axiosInstance = axios.create({
- baseURL: `${import.meta.env.REACT_APP_API_URL}/api`
-
+  baseURL: `${base}/api`
 });
-
-
-
 
 axiosInstance.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
