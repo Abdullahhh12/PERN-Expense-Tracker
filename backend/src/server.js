@@ -11,7 +11,10 @@ const app = express();
 
 
 // Allow all origins (for development)
-app.use(cors());
+app.use(cors({
+  origin: 'https://pern-expense-tracker.vercel.app',
+  credentials: true
+}));
 
 //middleware
 app.use(express.json())
