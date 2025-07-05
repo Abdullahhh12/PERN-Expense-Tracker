@@ -1,7 +1,7 @@
 // src/pages/CreateTransaction.jsx
 import React, { useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import axiosInstance from "../utils/axiosInstance";
 
 export default function CreateTransaction() {
   const [type, setType] = useState("expense");
@@ -12,7 +12,7 @@ export default function CreateTransaction() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const token = localStorage.getItem("token");
-    const user = await axios.get("http://localhost:5000/api/auth/me", {
+    const user = await axiosInstance.get("/auth/me", {
       headers: { Authorization: `Bearer ${token}` },
     });
 
@@ -23,7 +23,7 @@ export default function CreateTransaction() {
       user_id: user.data.user.id,
     };
 
-    await axios.post("http://localhost:5000/api/transactions", data, {
+    await axiosInstance.post("/transactions", data, {
       headers: { Authorization: `Bearer ${token}` },
     });
 
