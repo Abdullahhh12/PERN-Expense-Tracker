@@ -61,7 +61,7 @@ export default function Dashboard() {
         <h1 className="text-xl font-semibold">Hello, {user?.name} 👋</h1>
         <button
           onClick={() => navigate("/create")}
-          className="flex items-center gap-2 bg-orange-500 text-white px-4 py-2 rounded shadow"
+          className="flex items-center gap-2 bg-orange-500 hover:cursor-pointer text-white px-4 py-2 rounded shadow"
         >
           <PlusCircle size={18} /> Add
         </button>

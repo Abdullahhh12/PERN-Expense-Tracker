@@ -1,7 +1,7 @@
-// src/pages/CreateTransaction.jsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../utils/axiosInstance";
+import { toast } from "react-hot-toast"; // ✅ import toast
 
 export default function CreateTransaction() {
   const [type, setType] = useState("expense");
@@ -11,23 +11,30 @@ export default function CreateTransaction() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const token = localStorage.getItem("token");
-    const user = await axiosInstance.get("/auth/me", {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    try {
+      const token = localStorage.getItem("token");
+      const userRes = await axiosInstance.get("/auth/me", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
 
-    const data = {
-      title,
-      amount: type === "expense" ? -Math.abs(amount) : Math.abs(amount),
-      category: type,
-      user_id: user.data.user.id,
-    };
+      const data = {
+        title,
+        amount: type === "expense" ? -Math.abs(amount) : Math.abs(amount),
+        category: type,
+        user_id: userRes.data.user.id,
+      };
 
-    await axiosInstance.post("/transactions", data, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+      await axiosInstance.post("/transactions", data, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
 
-    navigate("/");
+      toast.success("Transaction created successfully!");
+      setTimeout(() => navigate("/"), 1000); // Delay to let toast show
+    } catch (error) {
+      toast.error(
+        error.response?.data?.message || "Failed to create transaction"
+      );
+    }
   };
 
   return (

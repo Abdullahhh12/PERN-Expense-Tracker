@@ -1,6 +1,6 @@
 // src/pages/Login.jsx
 import React, { useState } from "react";
-import axios from "axios";
+import { toast } from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
 import axiosInstance from "../utils/axiosInstance";
 
@@ -16,15 +16,16 @@ export default function Login() {
     try {
       const res = await axiosInstance.post("/auth/login", formData);
       localStorage.setItem("token", res.data.token);
-      navigate("/");
+      toast.success("Logged in Successfully")
+      setTimeout(()=>navigate("/"),1000);
     } catch (err) {
-      alert(err.response?.data?.message || "Login failed");
+      toast.error(err.response?.data?.message || "Login failed");
     }
   };
 
   return (
-    <div className="min-h-screen flex justify-center items-center bg-gray-100">
-      <form onSubmit={handleSubmit} className="bg-white p-8 shadow-md rounded w-96">
+    <div className="min-h-screen flex justify-center items-center bg-gradient-to-b from-orange-100 to-orange-50">
+      <form onSubmit={handleSubmit} className="bg-orange-100 p-8 shadow-xl rounded w-96">
         <h2 className="text-2xl font-bold mb-6 text-center">Login</h2>
 
         <input
@@ -45,7 +46,7 @@ export default function Login() {
           onChange={handleChange}
           required
         />
-        <button className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600">
+        <button className="w-full bg-orange-300 text-white py-2 rounded hover:bg-orange-600">
           Login
         </button>
       <p>Don't have an account ?<Link className="text-green-500"  to="/register"> Sign Up</Link></p>
